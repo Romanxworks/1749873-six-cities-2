@@ -17,7 +17,7 @@
     "ts": "ts-node"
   },
   "devDependencies": {
-    "@types/node": "^16.11.26",
+    "@types/node": "^16.11.58",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^8.12.0",
@@ -30,5 +30,8 @@
   "engines": {
     "node": "^16.13.0",
     "npm": "^8.1.0"
+  },
+  "dependencies": {
+    "chalk": "^5.0.1"
   }
 }
