@@ -16,9 +16,9 @@ export default class TSVFileReader implements FileReaderInterface {
       return [];
     }
     return this.rawData
-      .split('\r\n')
+      .split('\n')
       .filter((row) => row.trim() !== '')
-      .map((line) => line.split('!'))
+      .map((line) => line.split('\t'))
       .map(([
         title,
         description,
@@ -40,7 +40,7 @@ export default class TSVFileReader implements FileReaderInterface {
         password,
         status,
         latitude,
-        longitude,]) => ({
+        longitude]) => ({
         title,
         description,
         date: new Date(createdDate),
