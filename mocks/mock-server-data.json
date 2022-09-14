@@ -28,67 +28,16 @@
       "img/room.jpg", 
       "img/apartment-01.jpg", 
       "img/apartment-02.jpg", 
-      "img/apartment-03.jpg"
-    ],
-    "previewImages": [
-      "img/room.jpg", 
-      "img/apartment-01.jpg", 
+      "img/apartment-03.jpg",
+      "img/avatar-angelina.jpg",
       "img/apartment-02.jpg", 
       "img/apartment-03.jpg"
-    ],
-    
-    "dates": [
-      "2022-04-12T48:45:40.284Z",
-      "2022-02-10T08:45:40.284Z",
-      "2022-06-08T08:45:40.284Z",
-      "2022-01-09T02:22:40.284Z",
-      "2022-07-11T08:58:40.284Z",
-      "2022-04-17T08:45:40.284Z"
-    ],
-    "favorites": [
-
-    ],
-    "premium":[
-
-    ],
-    "ratings": [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5"
     ],
     "types": [
       "apartment", 
       "house", 
       "room", 
       "hotel"
-    ],
-    "bedrooms": [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8"
-    ],
-    "maxAdults": [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10"
-
-    ],
-    "price": [
-      "100"
     ],
     "goods": [
       "Breakfast", 
@@ -107,9 +56,6 @@
       "Marshall Ericsson",
       "Simple Name"
     ],
-    "avatars": [
-      "img/avatar-angelina.jpg"
-    ],
     "emails": [
       "snow@pisem.local",
       "president@dka.local",
@@ -125,12 +71,7 @@
       "kld798",
       "we4r5t",
       "8ritkj"
-    ],
-    "status":[
-
-    ],
-    "latitude": [],
-    "longitude": []
+    ]
 
   }
 }

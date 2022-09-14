@@ -1,0 +1,15 @@
+export const MIN_ROOMS = 1;
+export const MAX_ROOMS = 8;
+export const MIN_RATING = 1;
+export const MAX_RATING = 5;
+export const MIN_ADULTS = 1;
+export const MAX_ADULTS = 10;
+export const MIN_PRICE = 100;
+export const MAX_PRICE = 100000;
+export const MIN_LATITUDE = 48;
+export const MAX_LATITUDE = 49;
+export const MIN_LONGITUDE = 2;
+export const MAX_LONGITUDE = 3;
+export const FIRST_WEEK_DAY = 1;
+export const LAST_WEEK_DAY = 7;
+export const MAX_IMAGE = 6;
