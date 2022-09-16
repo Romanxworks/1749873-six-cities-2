@@ -1,0 +1,77 @@
+{
+  "api":{
+    "cities": [
+      "Paris",
+      "Dusseldorf",
+      "Hamburg",
+      "Cologne",
+      "Amsterdam",
+      "Brussels"
+    ],
+    "titles": [
+      "Nice room",
+      "Great apartments",
+      "Huge house",
+      "Simple room",
+      "Simple hotel",
+      "Simple apartment"
+    ],
+    "descriptions": [
+      "An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur",
+      "Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure",
+      "These cases are perfectly simple and easy to distinguish."
+    ],
+    "images": [
+      "img/room.jpg", 
+      "img/apartment-01.jpg", 
+      "img/apartment-02.jpg", 
+      "img/apartment-03.jpg",
+      "img/avatar-angelina.jpg",
+      "img/apartment-02.jpg", 
+      "img/apartment-03.jpg"
+    ],
+    "types": [
+      "apartment", 
+      "house", 
+      "room", 
+      "hotel"
+    ],
+    "goods": [
+      "Breakfast", 
+      "Air conditioning", 
+      "Laptop friendly workspace",
+      "Baby seat", 
+      "Washer", 
+      "Towels", 
+      "Fridge"
+    ],
+    "names": [
+      "Billy Stocks",
+      "Hank Moody",
+      "Lilly Ericsson",
+      "Willy Stocks",
+      "Marshall Ericsson",
+      "Simple Name"
+    ],
+    "emails": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local"
+    ],
+    "passwords": [
+      "1w1d1w",
+      "s3d34r4",
+      "984734",
+      "kld798",
+      "we4r5t",
+      "8ritkj"
+    ]
+
+  }
+}
