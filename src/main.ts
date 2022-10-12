@@ -28,3 +28,4 @@ applicationContainer.bind<OfferServiceInterface>(Component.OfferServiceInterface
 applicationContainer.bind<types.ModelType<OfferEntity>>(Component.OfferModel).toConstantValue(OfferModel);
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
+
