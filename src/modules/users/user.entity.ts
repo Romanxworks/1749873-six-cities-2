@@ -1,11 +1,11 @@
 import {User} from '../../types/user.js';
 import typegoose, {getModelForClass, defaultClasses} from '@typegoose/typegoose';
 import {createSHA256} from '../../utils/common.js';
-// import {
-//   MIN_LENGTH_NAME,
-//   MAX_LENGTH_NAME,
-//   MIN_LENGTH_PASSWORD,
-//   MAX_LENGTH_PASSWORD} from '../../const.js';
+import {
+  MIN_LENGTH_NAME,
+  MAX_LENGTH_NAME,
+  MIN_LENGTH_PASSWORD,
+  MAX_LENGTH_PASSWORD} from '../../const.js';
 
 const {prop, modelOptions} = typegoose;
 
@@ -36,14 +36,14 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   public avatarUrl!: string;
 
   @prop({required: true,
-    // minlength: [MIN_LENGTH_NAME, `Min length for name is ${MIN_LENGTH_NAME}`],
-    // maxlength: [MAX_LENGTH_NAME, `Max length for name is ${MAX_LENGTH_NAME}`],
+    minlength: [MIN_LENGTH_NAME, `Min length for name is ${MIN_LENGTH_NAME}`],
+    maxlength: [MAX_LENGTH_NAME, `Max length for name is ${MAX_LENGTH_NAME}`],
     default: ''})
   public name!: string;
 
   @prop({required: true,
-    // minlength: [MIN_LENGTH_PASSWORD, `Min length for password is ${MIN_LENGTH_PASSWORD}`],
-    // maxlength: [MAX_LENGTH_PASSWORD, `Max length for password is ${MAX_LENGTH_PASSWORD}`],
+    minlength: [MIN_LENGTH_PASSWORD, `Min length for password is ${MIN_LENGTH_PASSWORD}`],
+    maxlength: [MAX_LENGTH_PASSWORD, `Max length for password is ${MAX_LENGTH_PASSWORD}`],
     default: ''})
   private password!: string;
 
