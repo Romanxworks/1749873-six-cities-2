@@ -107,6 +107,123 @@ paths:
         "409":
           description: Ошибка публикации.
 
+  /offers/{id}:
+    get:
+      tags:
+        - offers
+      summary: Детальная информация по предложению
+      description: Детальная информация по предложению.
+
+      responses:
+        "201":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "409":
+          description: Предложение не найдено.
+    
+    put:
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: предоставляет ресурс для редактирования предложения.
+      requestBody:
+        description: Информация для редактирования предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "201":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "409":
+          description: Предложение не найдено.
+    
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения по аренде
+      description: Удаление предложениe по аренде созданные пользователем.
+      
+      responses:
+        "201":
+          description: Объект удален.
+
+        "409":
+          description: Предложение не найдено.
+
+      
+  /offers/:
+    get:
+      tags:
+        - offers
+      summary: Список предложений по аренде
+      description: Список предложений по аренде (по умолчанию сервис возвращает не больше 60).
+      
+      responses:
+        "201":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+        "409":
+          description: Предложений не найдено.
+
+  /comments/:
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения
+      description: Список комментариев для предложения (по умолчанию сервис возвращает не больше 50) последних комментариев.
+      
+      responses:
+        "201":
+          description: Список комментариев.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comments'
+
+        "409":
+          description: Комментариев не найдено.
+      
+  /comments/{offerId}:
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария
+      description: Добавление комментариев к определённому предложению по аренде.
+      requestBody:
+        description: Информация для добавления комментариев.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+      
+      responses:
+        "201":
+          description: Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        "409":
+          description: Ошибка отправки.
+
+
 components:
   schemas:
     createUser:
@@ -172,35 +289,41 @@ components:
         
         title:
           type: string
+          description: Наименование. Обязательное. Мин. длин 10 символов, макс. длина 100
           example: Nice room
         
         description:
           type: string
+          description: Описание предложения. Обязательное. Мин. длина 20 символов, макс. длина 1024 символа;
           example: An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
         
         
         type: 
           type: string
+          description: Тип жилья. Обязательное. Один из вариантов
+          enum: [apartment,house,room, hotel]
           example: room
         
         bedrooms:
           type: number
+          description: Количество комнат. Обязательное. Мин. 1, Макс. 8
           example: 1
         
         maxAdults:
            type: number
+           description: Количество гостей. Обязательное. Мин. 1, Макс. 10
            example: 1
           
         goods:
            type: array
-           example: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels, Fridge]
+           description: Удобства. Обязательное. Список удобств. Один или несколько вариантов из списка
+           enum: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels, Fridge] 
+           example: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer]
 
-        host:
-           type: string
-           example: object type User
 
         rating:
           type: number
+          description: Рейтинг. Обязательное. Число от 1 до 5. Допускаются числа с запятой (1 знак после запятой)
           example: 1
 
         isPremium:
@@ -220,6 +343,7 @@ components:
 
         city:
           type: string
+          enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
           example: Paris
          
         previewImage:
@@ -252,6 +376,7 @@ components:
         
         type: 
           type: string
+          enum: [apartment,house,room, hotel]
           example: room
         
         bedrooms:
@@ -267,8 +392,8 @@ components:
            example: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels, Fridge]
 
         host:
-           type: string
-           example: object type User
+           type: object
+           $ref: '#/components/schemas/user'
 
         rating:
           type: number
@@ -295,6 +420,7 @@ components:
 
         city:
           type: string
+          enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
           example: Paris
          
         previewImage:
@@ -304,3 +430,50 @@ components:
         images:
           type: array
           example: [img/room.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/room.jpg]
+
+    offers:
+     type: array
+     items:
+      type: object
+      $ref: '#/components/schemas/offer'
+      
+
+    comment:
+      type: object
+
+      properties:
+       
+       text:
+         type: string
+         example: Test comments
+       
+       publicDate: 
+          type: string
+          example: 2022-05-06T08:45:40.283Z
+
+       rating:
+          type: number
+          example: 1
+
+       author:
+          type: object
+          $ref: '#/components/schemas/user'
+    
+    comments:
+      type: array
+      items:
+       type: object
+       $ref: '#/components/schemas/comment'
+
+    createComment:
+      type: object
+
+      properties:
+       
+       text:
+         type: string
+         example: Test comments
+         
+       rating:
+          type: number
+          example: 1
