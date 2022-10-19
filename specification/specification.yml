@@ -40,6 +40,9 @@ paths:
 
         "409":
           description: Пользователь с таким email уже существует.
+        
+        "400": 
+          description: Некорректный запрос.
 
   /users/login:
     post:
@@ -55,6 +58,15 @@ paths:
             schema:
               $ref: '#/components/schemas/authUser'
         required: true  
+      responses:
+        "201":
+          description: Пользователь авторизирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "401":
+          description: Пользователь с таким email не зарегистрирован.
 
     get:
       tags:
@@ -62,15 +74,18 @@ paths:
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
     
-    responses:
-        "201":
-          description: Пользователь авторизирован. Объект пользователя.
+      responses:
+        "200":
+          description: Объект пользователя.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-        "409":
+        "401":
           description: Пользователь с таким email не зарегистрирован.
+
+        "400":
+          description: Некорректный запрос.
 
   /users/{userId}/avatar:
     post:
@@ -79,6 +94,16 @@ paths:
       summary: Загрузить изображение аватара
       description: Загружает изображение аватара пользователя. Изображение
         аватара должно быть в формате `png` или `jpg`.
+      responses:
+        "201":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Некорректный запрос.
 
 
   /offers/add:
@@ -104,8 +129,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/offer'
 
-        "409":
-          description: Ошибка публикации.
+        "400":
+          description: Ошибка публикации(некорректный запрос).
+
+        "401":
+          description: Пользователь не авторизован.
 
   /offers/{id}:
     get:
@@ -115,15 +143,15 @@ paths:
       description: Детальная информация по предложению.
 
       responses:
-        "201":
+        "200":
           description: Объект предложения.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/offer'
 
-        "409":
-          description: Предложение не найдено.
+        "400":
+          description: Некорректный запрос.
     
     put:
       tags:
@@ -145,21 +173,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/offer'
 
-        "409":
-          description: Предложение не найдено.
+        "400":
+          description: Некорректный запрос.
+        
+        "401":
+          description: Пользователь не авторизован.
     
     delete:
       tags:
         - offers
       summary: Удаление предложения по аренде
-      description: Удаление предложениe по аренде созданные пользователем.
+      description: Удаление предложениe по аренде, созданные пользователем.
       
       responses:
-        "201":
+        "200":
           description: Объект удален.
 
-        "409":
-          description: Предложение не найдено.
+        "400":
+          description: Некорректный запрос.
+        
+        "401":
+          description: Пользователь не авторизован.
 
       
   /offers/:
@@ -170,15 +204,15 @@ paths:
       description: Список предложений по аренде (по умолчанию сервис возвращает не больше 60).
       
       responses:
-        "201":
+        "200":
           description: Объект предложения.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/offers'
 
-        "409":
-          description: Предложений не найдено.
+        "400":
+          description: Некорректный запрос.
 
   /comments/:
     get:
@@ -188,15 +222,15 @@ paths:
       description: Список комментариев для предложения (по умолчанию сервис возвращает не больше 50) последних комментариев.
       
       responses:
-        "201":
+        "200":
           description: Список комментариев.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/comments'
 
-        "409":
-          description: Комментариев не найдено.
+        "400":
+          description: Некорректный запрос.
       
   /comments/{offerId}:
     post:
@@ -220,8 +254,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/comment'
 
-        "409":
+        "400":
           description: Ошибка отправки.
+        
+        "401":
+          description: Пользователь не авторизован.
 
 
 components:
