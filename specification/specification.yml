@@ -1,0 +1,516 @@
+openapi: 3.1.0
+info:
+  title: API сервер для учебного проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: NodeCourse
+    url: https://opensource.org/licenses/NodeCourse
+  version: 1.0.0
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+        
+        "400": 
+          description: Некорректный запрос.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authUser'
+        required: true  
+      responses:
+        "201":
+          description: Пользователь авторизирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "401":
+          description: Пользователь с таким email не зарегистрирован.
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю
+    
+      responses:
+        "200":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "401":
+          description: Пользователь с таким email не зарегистрирован.
+
+        "400":
+          description: Некорректный запрос.
+
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
+      responses:
+        "201":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Некорректный запрос.
+
+
+  /offers/add:
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения
+      description: Создание нового предложения от пользователя.
+
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        "201":
+          description: Предложения опубликовано. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Ошибка публикации(некорректный запрос).
+
+        "401":
+          description: Пользователь не авторизован.
+
+  /offers/{id}:
+    get:
+      tags:
+        - offers
+      summary: Детальная информация по предложению
+      description: Детальная информация по предложению.
+
+      responses:
+        "200":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Некорректный запрос.
+    
+    put:
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: предоставляет ресурс для редактирования предложения.
+      requestBody:
+        description: Информация для редактирования предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+      responses:
+        "201":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+
+        "400":
+          description: Некорректный запрос.
+        
+        "401":
+          description: Пользователь не авторизован.
+    
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения по аренде
+      description: Удаление предложениe по аренде, созданные пользователем.
+      
+      responses:
+        "200":
+          description: Объект удален.
+
+        "400":
+          description: Некорректный запрос.
+        
+        "401":
+          description: Пользователь не авторизован.
+
+      
+  /offers/:
+    get:
+      tags:
+        - offers
+      summary: Список предложений по аренде
+      description: Список предложений по аренде (по умолчанию сервис возвращает не больше 60).
+      
+      responses:
+        "200":
+          description: Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+        "400":
+          description: Некорректный запрос.
+
+  /comments/:
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения
+      description: Список комментариев для предложения (по умолчанию сервис возвращает не больше 50) последних комментариев.
+      
+      responses:
+        "200":
+          description: Список комментариев.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comments'
+
+        "400":
+          description: Некорректный запрос.
+      
+  /comments/{offerId}:
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария
+      description: Добавление комментариев к определённому предложению по аренде.
+      requestBody:
+        description: Информация для добавления комментариев.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+      
+      responses:
+        "201":
+          description: Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+
+        "400":
+          description: Ошибка отправки.
+        
+        "401":
+          description: Пользователь не авторизован.
+
+
+components:
+  schemas:
+    createUser:
+
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: test@tetsmail.ru
+
+        name:
+          type: string
+          example: Test
+
+        password:
+          type: string
+          example: 123456
+    
+    authUser:
+
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: test@tetsmail.ru
+
+        password:
+          type: string
+          example: 123456
+
+    user:
+
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: test@tetsmail.ru
+
+        name:
+          type: string
+          example: Test
+
+        type:
+          type: boolean
+          example: false
+        
+        avatarUrl:
+          type: string
+          example: img/avatar-angelina.jpg
+
+    createOffer:
+
+     type: object
+
+     properties:
+        
+        title:
+          type: string
+          description: Наименование. Обязательное. Мин. длин 10 символов, макс. длина 100
+          example: Nice room
+        
+        description:
+          type: string
+          description: Описание предложения. Обязательное. Мин. длина 20 символов, макс. длина 1024 символа;
+          example: An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+        
+        
+        type: 
+          type: string
+          description: Тип жилья. Обязательное. Один из вариантов
+          enum: [apartment,house,room, hotel]
+          example: room
+        
+        bedrooms:
+          type: number
+          description: Количество комнат. Обязательное. Мин. 1, Макс. 8
+          example: 1
+        
+        maxAdults:
+           type: number
+           description: Количество гостей. Обязательное. Мин. 1, Макс. 10
+           example: 1
+          
+        goods:
+           type: array
+           description: Удобства. Обязательное. Список удобств. Один или несколько вариантов из списка
+           enum: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels, Fridge] 
+           example: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer]
+
+
+        rating:
+          type: number
+          description: Рейтинг. Обязательное. Число от 1 до 5. Допускаются числа с запятой (1 знак после запятой)
+          example: 1
+
+        isPremium:
+          type: boolean
+          example: false
+
+        price:
+          type: number
+          example: 100
+
+        location: 
+          type: object
+          example: {
+              latitude: 48.85661,
+              longitude: 2.351499,
+              }
+
+        city:
+          type: string
+          enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
+          example: Paris
+         
+        previewImage:
+          type: string
+          example: img/room.jpg
+
+        images:
+          type: array
+          example: [img/room.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/room.jpg]
+    
+    offer:
+     type: object
+
+     properties:
+        id:
+          type: string
+          example: 6329c3d6a04db1061c3824ea
+        
+        title:
+          type: string
+          example: Nice room
+        
+        description:
+          type: string
+          example: An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+        
+        date:
+          type: string
+          example: 2022-04-06T08:45:40.283Z
+        
+        type: 
+          type: string
+          enum: [apartment,house,room, hotel]
+          example: room
+        
+        bedrooms:
+          type: number
+          example: 1
+        
+        maxAdults:
+           type: number
+           example: 1
+          
+        goods:
+           type: array
+           example: [Breakfast, Air conditioning, Laptop friendly workspace, Baby seat, Washer, Towels, Fridge]
+
+        host:
+           type: object
+           $ref: '#/components/schemas/user'
+
+        rating:
+          type: number
+          example: 1
+
+        isFavorite:
+          type: boolean
+          example: false
+
+        isPremium:
+          type: boolean
+          example: false
+
+        price:
+          type: number
+          example: 100
+
+        location: 
+          type: object
+          example: {
+              latitude: 48.85661,
+              longitude: 2.351499,
+              }
+
+        city:
+          type: string
+          enum: [Paris, Cologne, Brussels, Amsterdam, Hamburg, Dusseldorf]
+          example: Paris
+         
+        previewImage:
+          type: string
+          example: img/room.jpg
+
+        images:
+          type: array
+          example: [img/room.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/apartment-01.jpg, img/room.jpg]
+
+    offers:
+     type: array
+     items:
+      type: object
+      $ref: '#/components/schemas/offer'
+      
+
+    comment:
+      type: object
+
+      properties:
+       
+       text:
+         type: string
+         example: Test comments
+       
+       publicDate: 
+          type: string
+          example: 2022-05-06T08:45:40.283Z
+
+       rating:
+          type: number
+          example: 1
+
+       author:
+          type: object
+          $ref: '#/components/schemas/user'
+    
+    comments:
+      type: array
+      items:
+       type: object
+       $ref: '#/components/schemas/comment'
+
+    createComment:
+      type: object
+
+      properties:
+       
+       text:
+         type: string
+         example: Test comments
+         
+       rating:
+          type: number
+          example: 1
