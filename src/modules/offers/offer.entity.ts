@@ -74,7 +74,8 @@ export class OfferEntity extends defaultClasses.TimeStamps  {
 
   @prop({required: true,
     minlength: [MIN_RATING, `Min length for rating is ${MIN_RATING}`],
-    maxlength: [MAX_RATING, `Max length for rating is ${MAX_RATING}`]
+    maxlength: [MAX_RATING, `Max length for rating is ${MAX_RATING}`],
+    default: 1
   })
   public rating!: number;
 
@@ -101,6 +102,9 @@ export class OfferEntity extends defaultClasses.TimeStamps  {
 
   @prop({required: true})
   public previewImage!: string;
+
+  @prop({default: 0})
+  public commentCount!: number;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

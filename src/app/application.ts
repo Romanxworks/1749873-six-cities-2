@@ -5,13 +5,15 @@ import {inject, injectable} from 'inversify';
 import {Component} from '../types/component.types.js';
 import {getURI} from '../utils/db.js';
 import {DatabaseInterface} from '../common/database/database.interface.js';
+import { OfferServiceInterface } from '../modules/offers/offer-service.interface.js';
 
 @injectable()
 export default class Application {
   constructor(
   @inject(Component.LoggerInterface) private logger: LoggerInterface,
   @inject(Component.ConfigInterface) private config: ConfigInterface,
-  @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface
+  @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
+  @inject(Component.OfferServiceInterface) private offer: OfferServiceInterface
   ) {}
 
   public async init() {
@@ -27,5 +29,7 @@ export default class Application {
     );
 
     await this.databaseClient.connect(uri);
+    // const offerS = await this.offer.find();
+    // console.log(offerS);
   }
 }

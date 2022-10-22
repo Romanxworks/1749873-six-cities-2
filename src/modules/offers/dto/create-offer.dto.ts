@@ -1,5 +1,3 @@
-// import {User} from '../../../types/user.js';
-
 export default class CreateOfferDto {
   public images!: string[];
   public title!: string;

@@ -21,3 +21,6 @@ export const MIN_LENGTH_TITLE = 10;
 export const MAX_LENGTH_TITLE = 100;
 export const MIN_LENGTH_DESCRIPTION = 20;
 export const MAX_LENGTH_DESCRIPTION = 1024;
+export const DEFAULT_OFFER_COUNT = 60;
+export const DEFAULT_OFFER_PREMIUM_COUNT = 3;
+
