@@ -33,10 +33,22 @@ export default class OfferService implements OfferServiceInterface {
   public async find(count?:number): Promise<DocumentType<OfferEntity>[]> {
     const limit = count ?? DEFAULT_OFFER_COUNT;
     return this.offerModel
-      .find()
-      .sort({createdAt: SortType.Down})
-      .limit(limit)
-      .populate(['host'])
+      .aggregate([
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'host',
+            foreignField: '_id',
+            as: 'hoster'
+          },
+        },
+        { $addFields:
+          { host: { $arrayElemAt: ['$hoster', 0]} }
+        },
+        { $unset: ['hoster']},
+        { $limit: limit},
+        { $sort: { offerCount: SortType.Down } }
+      ])
       .exec();
   }
 
@@ -79,4 +91,32 @@ export default class OfferService implements OfferServiceInterface {
       }}).exec();
   }
 
+  public async updateFavoriteById(offerId: string, favoriteStatus: boolean): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findByIdAndUpdate(offerId, {isFavorite: favoriteStatus}, {new: true})
+      .populate(['host'])
+      .exec();
+  }
+
+  public async updateRating(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .aggregate([
+        {
+          $lookup: {
+            from: 'comments',
+            let: {offerId: '$_id'},
+            pipeline: [
+              { $match: { $expr: { $in: ['$$offerId', '$offerId'] } } },
+              { $project: { rating: 1}}
+            ],
+            as: 'allRating'
+          },
+        },
+        { $addFields:
+          {commentCount: {$size: '$allRating'}, rating: {$trunc: {$avg: '$allRating'}}}
+        },
+        { $unset: ['allRating']},
+      ]).exec();
+
+  }
 }
