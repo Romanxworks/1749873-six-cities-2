@@ -18,6 +18,9 @@ import OfferService from './modules/offers/offer.service.js';
 import CommentService from './modules/comments/comment.service.js';
 import {CommentServiceInterface} from './modules/comments/comment-service.interface.js';
 import {CommentEntity, CommentModel} from './modules/comments/comment.entity.js';
+import {FavoritesServiceInterface} from './modules/favorites/favorites-service.interface.js';
+import { FavoritesEntity, FavoritesModel } from './modules/favorites/favorites.entity.js';
+import  FavoritesService  from './modules/favorites/favorites.service.js';
 
 const applicationContainer = new Container();
 
@@ -31,6 +34,9 @@ applicationContainer.bind<OfferServiceInterface>(Component.OfferServiceInterface
 applicationContainer.bind<types.ModelType<OfferEntity>>(Component.OfferModel).toConstantValue(OfferModel);
 applicationContainer.bind<CommentServiceInterface>(Component.CommentServiceInterface).to(CommentService).inSingletonScope();
 applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
+applicationContainer.bind<FavoritesServiceInterface>(Component.FavoritesServiceInterface).to(FavoritesService).inSingletonScope();
+applicationContainer.bind<types.ModelType<FavoritesEntity>>(Component.FavoritesModel).toConstantValue(FavoritesModel);
+
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
 

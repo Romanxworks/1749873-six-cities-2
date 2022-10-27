@@ -45,7 +45,7 @@ export const createOffer = (row: string) => {
       email,
       avatarUrl: avatar,
       password,
-      type: Boolean(status),
+      type: Boolean(Number(status)),
     },
     location:{
       latitude: Number.parseFloat(latitude),
