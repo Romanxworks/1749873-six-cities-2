@@ -5,16 +5,20 @@ import {inject, injectable} from 'inversify';
 import {Component} from '../types/component.types.js';
 import {getURI} from '../utils/db.js';
 import {DatabaseInterface} from '../common/database/database.interface.js';
+import express, {Express} from 'express';
 // import { OfferServiceInterface } from '../modules/offers/offer-service.interface.js';
 
 @injectable()
 export default class Application {
+  private expressApp: Express;
   constructor(
   @inject(Component.LoggerInterface) private logger: LoggerInterface,
   @inject(Component.ConfigInterface) private config: ConfigInterface,
   @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
   // @inject(Component.OfferServiceInterface) private offer: OfferServiceInterface
-  ) {}
+  ) {
+    this.expressApp = express();
+  }
 
   public async init() {
     this.logger.info('Application initialization...');
@@ -29,6 +33,8 @@ export default class Application {
     );
 
     await this.databaseClient.connect(uri);
+    this.expressApp.listen(this.config.get('PORT'));
+    this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
     // const offerS = await this.offer.find();
     // console.log(offerS);
   }
