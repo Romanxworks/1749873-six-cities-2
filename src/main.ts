@@ -21,6 +21,10 @@ import {CommentEntity, CommentModel} from './modules/comments/comment.entity.js'
 import {FavoritesServiceInterface} from './modules/favorites/favorites-service.interface.js';
 import { FavoritesEntity, FavoritesModel } from './modules/favorites/favorites.entity.js';
 import  FavoritesService  from './modules/favorites/favorites.service.js';
+import {ControllerInterface} from './common/controller/controller.interface.js';
+import OfferController from './modules/offers/offer.controller.js';
+import UserController from './modules/users/user.controller.js';
+import FavoritesController from './modules/favorites/favorites.controller.js';
 
 const applicationContainer = new Container();
 
@@ -36,6 +40,10 @@ applicationContainer.bind<CommentServiceInterface>(Component.CommentServiceInter
 applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
 applicationContainer.bind<FavoritesServiceInterface>(Component.FavoritesServiceInterface).to(FavoritesService).inSingletonScope();
 applicationContainer.bind<types.ModelType<FavoritesEntity>>(Component.FavoritesModel).toConstantValue(FavoritesModel);
+
+applicationContainer.bind<ControllerInterface>(Component.OfferController).to(OfferController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.FavoritesController).to(FavoritesController).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();

@@ -1,4 +1,4 @@
 export default class CreateFavoritesDto {
   public offerId!: string[];
-  public userId!: string;
+  public email!: string;
 }

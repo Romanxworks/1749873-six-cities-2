@@ -4,8 +4,8 @@ import {createSHA256} from '../../utils/common.js';
 import {
   MIN_LENGTH_NAME,
   MAX_LENGTH_NAME,
-  MIN_LENGTH_PASSWORD,
-  MAX_LENGTH_PASSWORD} from '../../const.js';
+  // MIN_LENGTH_PASSWORD, MAX_LENGTH_PASSWORD
+} from '../../const.js';
 
 const {prop, modelOptions} = typegoose;
 
@@ -32,7 +32,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   })
   public email!: string;
 
-  @prop({required: false, default: ''})
+  @prop({required: false, default: 'avatar-angelina.jpg'})
   public avatarUrl!: string;
 
   @prop({required: true,
@@ -42,8 +42,8 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   public name!: string;
 
   @prop({required: true,
-    minlength: [MIN_LENGTH_PASSWORD, `Min length for password is ${MIN_LENGTH_PASSWORD}`],
-    maxlength: [MAX_LENGTH_PASSWORD, `Max length for password is ${MAX_LENGTH_PASSWORD}`],
+    // minlength: [MIN_LENGTH_PASSWORD, `Min length for password is ${MIN_LENGTH_PASSWORD}`],
+    // maxlength: [MAX_LENGTH_PASSWORD, `Max length for password is ${MAX_LENGTH_PASSWORD}`],
     default: ''})
   private password!: string;
 

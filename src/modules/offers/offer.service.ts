@@ -47,7 +47,9 @@ export default class OfferService implements OfferServiceInterface {
       { $addFields:
     { host: { $arrayElemAt: ['$hoster', 0]},
       commentCount: {$size: '$allRating'},
-      rating: {$trunc: {$avg: '$allRating'}}
+      rating: {$trunc: {$avg: '$allRating'}},
+      id: { $toString: '$_id'},
+      date: '$createdAt',
     }
       },
       { $unset: ['hoster', 'allRating']},
@@ -76,7 +78,12 @@ export default class OfferService implements OfferServiceInterface {
           },
         },
         { $addFields:
-          { host: { $arrayElemAt: ['$hoster', 0]},commentCount: {$size: '$allRating'}, rating: {$trunc: {$avg: '$allRating'}} }
+          { host: { $arrayElemAt: ['$hoster', 0]},
+            commentCount: {$size: '$allRating'},
+            rating: {$trunc: {$avg: '$allRating'}},
+            id: { $toString: '$_id'},
+            date: '$createdAt',
+          }
         },
         { $unset: ['hoster', 'allRating']},
         { $limit: limit},
@@ -120,7 +127,12 @@ export default class OfferService implements OfferServiceInterface {
           },
         },
         { $addFields:
-        { host: { $arrayElemAt: ['$hoster', 0]},commentCount: {$size: '$allRating'}, rating: {$trunc: {$avg: '$allRating'}} }
+        { host: { $arrayElemAt: ['$hoster', 0]},
+          commentCount: {$size: '$allRating'},
+          rating: {$trunc: {$avg: '$allRating'}},
+          id: { $toString: '$_id'},
+          date: '$createdAt',
+        }
         },
         { $unset: ['hoster', 'allRating']},
         { $limit: DEFAULT_OFFER_PREMIUM_COUNT},
