@@ -13,17 +13,18 @@ export interface FavoritesEntity extends  defaultClasses.Base {}
 export class FavoritesEntity extends defaultClasses.TimeStamps {
 
   @prop({
-    ref: OfferEntity,
-    required: true,
-    default: []
-  })
-  public offerId!: Ref<OfferEntity>[];
-
-  @prop({
     unique: true,
     required: true
   })
   public email!: string;
+
+  @prop({
+    ref: OfferEntity,
+    required: true,
+    _id: false,
+    default: []
+  })
+  public offerId!: Ref<OfferEntity>[];
 
 }
 

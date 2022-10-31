@@ -10,6 +10,7 @@ import {fillDTO} from '../../utils/common.js';
 import OfferResponse from './response/offer.response.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
 import UpdateOfferDto from './dto/update-offer.dto.js';
+import HttpError from '../../common/errors/http-error.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -63,9 +64,11 @@ export default class OfferController extends Controller {
     const existOffer = await this.offerService.exists(id);
 
     if (!existOffer) {
-      const errorMessage = `Offer with id "${id}" not exists.`;
-      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {error: errorMessage});
-      return this.logger.error(errorMessage);
+      throw new HttpError(
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        `Offer with id "${id}" not exists.`,
+        'OfferController'
+      );
     }
 
     const result = await this.offerService.updateById(id, body);
@@ -81,8 +84,11 @@ export default class OfferController extends Controller {
     const existOffer = await this.offerService.exists(_req.params.id);
     const errorMessage = `Offer with id "${_req.params.id}" has been removed.`;
     if (!existOffer) {
-      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {error: errorMessage});
-      return this.logger.error(errorMessage);
+      throw new HttpError(
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        errorMessage,
+        'OfferController'
+      );
     }
     await this.offerService.deleteById(_req.params.id);
     this.send(res, StatusCodes.OK, {info: errorMessage});
@@ -94,9 +100,11 @@ export default class OfferController extends Controller {
     const existOffer = await this.offerService.exists(_req.params.id);
 
     if (!existOffer) {
-      const errorMessage = `Offer with id "${_req.params.id}" not exists.`;
-      this.send(res, StatusCodes.UNPROCESSABLE_ENTITY, {error: errorMessage});
-      return this.logger.error(errorMessage);
+      throw new HttpError(
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        `Offer with id "${_req.params.id}" not exists.`,
+        'OfferController'
+      );
     }
     const offer = await this.offerService.findById(_req.params.id);
     const offerResponse = fillDTO(OfferResponse, offer);

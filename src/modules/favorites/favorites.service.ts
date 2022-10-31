@@ -12,14 +12,14 @@ export default class FavoritesService implements FavoritesServiceInterface {
   ) {}
 
   public async create(dto: CreateFavoritesDto): Promise<DocumentType<FavoritesEntity>> {
-    const favorites = await this.favoritesModel.create(dto);
-    return favorites.populate('email');
+    return await this.favoritesModel.create(dto);
   }
 
   public async findByUserEmail(email: string): Promise<DocumentType<FavoritesEntity>| null> {
     return this.favoritesModel
       .findOne({email})
-      .populate(['offerId']);
+      .populate(['offerId'])
+      .exec();
   }
 
   public async deleteByUserEmail(email: string): Promise<number> {
@@ -33,13 +33,13 @@ export default class FavoritesService implements FavoritesServiceInterface {
   public async addFavorite(email: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null> {
     return this.favoritesModel
       .findOneAndUpdate({email}, {$push: {'offerId': offerId }}, {new: true})
-      .populate(['offerId']).exec();
+      .populate('offerId').exec();
   }
 
   public async deleteFavorite(email: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null> {
     return this.favoritesModel
       .findOneAndUpdate({email}, {$pull: {'offerId': offerId }}, {new: true})
-      .populate(['offerId']).exec();
+      .populate('offerId').exec();
   }
 
 }

@@ -26,7 +26,8 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     this.type = data.type;
   }
 
-  @prop({ unique: true,
+  @prop({
+    unique: true,
     required: true,
     match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect']
   })

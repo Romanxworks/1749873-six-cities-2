@@ -9,6 +9,9 @@ import {fillDTO} from '../../utils/common.js';
 import UserResponse from './response/user.response.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import { FavoritesServiceInterface } from '../favorites/favorites-service.interface.js';
+import { StatusCodes } from 'http-status-codes';
+import HttpError from '../../common/errors/http-error.js';
+import LoginUserDto from './dto/login-user.dto.js';
 
 
 @injectable()
@@ -24,6 +27,7 @@ export default class UserController extends Controller {
 
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:id', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/login', method: HttpMethod.Post, handler: this.login});
 
   }
 
@@ -38,11 +42,42 @@ export default class UserController extends Controller {
     {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDto>,
     res: Response
   ): Promise<void> {
-    const result = await this.userService.findOrCreate(body, 'solt');
-    await this.favoritesService.create({email:body.email,offerId:[] });
+
+    const existsUser = await this.userService.findByEmail(body.email);
+
+    if (existsUser) {
+      throw new HttpError(
+        StatusCodes.CONFLICT,
+        `User with email ${body.email} exists.`,
+        'UserController',
+      );
+    }
+    const result = await this.userService.create(body, 'solt');
+    console.log(body.email);
+    await this.favoritesService.create({email:body.email, offerId:[] });
     this.created(
       res,
       fillDTO(UserResponse, result)
+    );
+  }
+
+  public async login(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>): Promise<void>
+  {
+    const existsUser = await this.userService.findByEmail(body.email);
+
+    if (!existsUser) {
+      throw new HttpError(
+        StatusCodes.UNAUTHORIZED,
+        `User with email ${body.email} not found.`,
+        'UserController',
+      );
+    }
+
+    throw new HttpError(
+      StatusCodes.NOT_IMPLEMENTED,
+      'Not implemented',
+      'UserController',
     );
   }
 
