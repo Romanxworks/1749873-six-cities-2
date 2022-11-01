@@ -4,8 +4,8 @@ import CreateFavoritesDto from './dto/create-favorites.dto.js';
 
 export interface FavoritesServiceInterface {
   create(dto: CreateFavoritesDto): Promise<DocumentType<FavoritesEntity>>;
-  findByUserId(userId: string): Promise<DocumentType<FavoritesEntity>| null>;
-  deleteByUserId(offerId: string): Promise<number | null>;
-  addFavoriteByUserId(userId: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null>;
-  deleteFavoriteByUserId(userId: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null>;
+  findByUserEmail(email: string): Promise<DocumentType<FavoritesEntity>| null>;
+  deleteByUserEmail(email: string): Promise<number | null>;
+  addFavorite(email: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null>;
+  deleteFavorite(email: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null>;
 }

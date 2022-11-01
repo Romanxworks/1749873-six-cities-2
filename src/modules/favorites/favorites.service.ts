@@ -12,34 +12,34 @@ export default class FavoritesService implements FavoritesServiceInterface {
   ) {}
 
   public async create(dto: CreateFavoritesDto): Promise<DocumentType<FavoritesEntity>> {
-    const favorites = await this.favoritesModel.create(dto);
-    return favorites.populate('userId');
+    return await this.favoritesModel.create(dto);
   }
 
-  public async findByUserId(userId: string): Promise<DocumentType<FavoritesEntity>| null> {
+  public async findByUserEmail(email: string): Promise<DocumentType<FavoritesEntity>| null> {
     return this.favoritesModel
-      .findOne({userId})
-      .populate(['offerId', 'userId']);
+      .findOne({email})
+      .populate(['offerId'])
+      .exec();
   }
 
-  public async deleteByUserId(userId: string): Promise<number> {
+  public async deleteByUserEmail(email: string): Promise<number> {
     const result = await this.favoritesModel
-      .deleteMany({userId})
+      .deleteMany({email})
       .exec();
 
     return result.deletedCount;
   }
 
-  public async addFavoriteByUserId(userId: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null> {
+  public async addFavorite(email: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null> {
     return this.favoritesModel
-      .findOneAndUpdate({userId}, {$push: {'offerId': offerId }}, {new: true})
-      .populate(['offerId', 'userId']).exec();
+      .findOneAndUpdate({email}, {$push: {'offerId': offerId }}, {new: true})
+      .populate('offerId').exec();
   }
 
-  public async deleteFavoriteByUserId(userId: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null> {
+  public async deleteFavorite(email: string, offerId: string): Promise<DocumentType<FavoritesEntity> | null> {
     return this.favoritesModel
-      .findOneAndUpdate({userId}, {$pull: {'offerId': offerId }}, {new: true})
-      .populate(['offerId', 'userId']).exec();
+      .findOneAndUpdate({email}, {$pull: {'offerId': offerId }}, {new: true})
+      .populate('offerId').exec();
   }
 
 }

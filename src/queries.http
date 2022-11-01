@@ -2,3 +2,137 @@
 GET http://localhost:3123/api HTTP/1.1
 
 ###
+
+# Офферы
+## Получить список предложений
+
+GET http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Получить список предложений ограниченный по кол-ву
+
+GET http://localhost:4000/offers/count/3 HTTP/1.1
+Content-Type: application/json
+
+###
+
+## создать новое предложение
+
+
+POST http://localhost:4000/offers HTTP/1.1
+Content-Type: application/json
+
+
+
+  {
+    "images": [ "img/apartment-03.jpg", "img/avatar-angelina.jpg"],
+    "title": "Good & house",
+    "description": "Nor again is there anyone who loves or pursues or desires to obtain pa…",
+    "type": "room",
+    "date": "2022-09-12T18:00:11.162Z",
+    "bedrooms": 2,
+    "maxAdults": 4,
+    "goods": ["Breakfast", "Laptop friendly workspace"],
+    "host": "6358122e58cb01e36921c84c",
+    "rating": 3,
+    "isPremium": false,
+    "price": 30869,
+    "location": {
+      "latitude": 48.51722, 
+      "longitude": 2.81168
+    },
+    "city": "London",
+    "previewImage": "img/apartment-01.jpg"
+  }
+
+###
+
+## обновить предложение
+
+PUT http://localhost:4000/offers/6358122e58cb01e36921c84e HTTP/1.1
+Content-Type: application/json
+
+
+  {
+    "type": "house"
+  }
+
+###
+
+## Удалить предложение
+
+DELETE http://localhost:4000/offers/635d414807b9107a5b5b71e1 HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Получить предложение по id
+GET http://localhost:4000/offers/6358122f58cb01e36921c859 HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Получить premium предложения по городу
+GET http://localhost:4000/offers/premium/Paris HTTP/1.1
+Content-Type: application/json
+
+###
+
+
+# Юзеры
+## Получить Юзер по id
+
+GET http://localhost:4000/users/6358122e58cb01e36921c847 HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Создать Юзера
+
+POST  http://localhost:4000/users/ HTTP/1.1
+Content-Type: application/json
+
+ {
+  "email": "romDwsE@mail.ru",
+  "name": "EWcdv Cage",
+  "type": false,
+  "password": "12132"
+ }
+
+###
+
+## Авторизация пользователя
+
+POST http://localhost:4000/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "fish@big.local",
+  "password": "123456"
+}
+
+###
+
+# Избранное
+
+## Добавить/удалить в избранное
+
+POST  http://localhost:4000/favorites/6358122f58cb01e36921c859/0 HTTP/1.1
+Content-Type: application/json
+
+ {
+  "email": "romDwsE@mail.ru"
+ }
+
+###
+
+## Получить список избранного
+
+GET  http://localhost:4000/favorites/romDwsE@mail.ru HTTP/1.1
+Content-Type: application/json
+X-Token: cvw-roma@mail.ru
+
+
+###
