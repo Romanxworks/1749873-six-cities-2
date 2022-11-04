@@ -103,7 +103,9 @@ export class OfferEntity extends defaultClasses.TimeStamps  {
   @prop({required: true})
   public previewImage!: string;
 
-  @prop({default: 0})
+  @prop({
+    required: true,
+    default: 0})
   public commentCount!: number;
 }
 

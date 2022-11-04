@@ -27,6 +27,7 @@ import UserController from './modules/users/user.controller.js';
 import FavoritesController from './modules/favorites/favorites.controller.js';
 import ExceptionFilter from './common/errors/exception-filter.js';
 import {ExceptionFilterInterface} from './common/errors/exception-filter.interface.js';
+import CommentController from './modules/comments/comment.controller.js';
 
 const applicationContainer = new Container();
 
@@ -46,6 +47,7 @@ applicationContainer.bind<types.ModelType<FavoritesEntity>>(Component.FavoritesM
 applicationContainer.bind<ControllerInterface>(Component.OfferController).to(OfferController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.FavoritesController).to(FavoritesController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.CommentController).to(CommentController).inSingletonScope();
 
 applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 

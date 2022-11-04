@@ -22,11 +22,11 @@ export default class FavoritesController extends Controller {
     this.logger.info('Register routes for FavoritesController...');
 
     this.addRoute({path: '/:id/:type', method: HttpMethod.Post, handler: this.addOrDelete});
-    this.addRoute({path: '/:email', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/:email', method: HttpMethod.Get, handler: this.show});
 
   }
 
-  public async index(_req: Request, res: Response,): Promise<void> {
+  public async show(_req: Request, res: Response,): Promise<void> {
     // console.log(_req.headers);
     const favorites = await this.favoritesService.findByUserEmail(_req.params.email);
     const favoritesResponse = fillDTO(FavoritesResponse, favorites);
@@ -40,7 +40,7 @@ export default class FavoritesController extends Controller {
     if (!existsUser) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email ${_req.body.email} not found.`,
+        `User with email ${_req.body.email} not registered.`,
         'FavoritesController',
       );
     }

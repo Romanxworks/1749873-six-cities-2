@@ -14,8 +14,11 @@ tags:
     description: Действия с комментариями.
   - name: users
     description: Действия с пользователем.
+  - name: favorites
+    description: Действия со списком избранного.
+    
 paths:
-  /users/register:
+  /users/:
     post:
       tags:
         - users
@@ -86,6 +89,24 @@ paths:
 
         "400":
           description: Некорректный запрос.
+  
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
+      responses:
+        "201":
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Некорректный запрос.
 
 
   /offers/:
@@ -152,7 +173,7 @@ paths:
         "400":
           description: Некорректный запрос.
     
-    put:
+    patch:
       tags:
         - offers
       summary: Редактирование предложения
@@ -234,6 +255,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/comment'
+
+        "400":
+          description: Ошибка отправки.
+        
+        "401":
+          description: Пользователь не авторизован.
+
+  /favorites/:{offerId}/1:
+    post:
+      tags:
+        - favorites
+      summary: Добавление пердложений в избранное
+      description: Добавление пердложений в избранное к определённому пользователю.
+       status--- 0- удалить из избранного
+                 1- добавить в избранное
+      
+      responses:
+        "201":
+          description: Объект пердложений.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/favorites'
 
         "400":
           description: Ошибка отправки.
@@ -495,3 +539,9 @@ components:
        rating:
           type: number
           example: 1
+      
+    favorites:
+     type: array
+     items:
+      type: object
+      $ref: '#/components/schemas/offer'

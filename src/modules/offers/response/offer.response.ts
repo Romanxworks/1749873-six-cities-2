@@ -1,7 +1,8 @@
-import {Expose} from 'class-transformer';
+import {Expose, Type} from 'class-transformer';
+import UserResponse from '../../users/response/user.response.js';
 
 export default class OfferResponse {
-  @Expose()
+  @Expose({name: '_id'})
   public id!: string;
 
   @Expose()
@@ -13,7 +14,7 @@ export default class OfferResponse {
   @Expose()
   public description!: string;
 
-  @Expose()
+  @Expose({name: 'createdAt'})
   public date!: Date;
 
   @Expose()
@@ -28,8 +29,9 @@ export default class OfferResponse {
   @Expose()
   public goods!: string[];
 
-  @Expose()
-  public host!: string;
+  @Expose({name: 'host'})
+  @Type(() => UserResponse)
+  public user!: UserResponse;
 
   @Expose()
   public rating!: number;

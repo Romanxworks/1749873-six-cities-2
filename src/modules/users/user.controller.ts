@@ -26,12 +26,12 @@ export default class UserController extends Controller {
     this.logger.info('Register routes for UserController...');
 
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:id', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/:id', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/login', method: HttpMethod.Post, handler: this.login});
 
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
+  public async show(_req: Request, res: Response): Promise<void> {
     const user = await this.userService.findById(_req.params.id);
     const userResponse = fillDTO(UserResponse, user);
     this.ok(res, userResponse);
@@ -53,7 +53,6 @@ export default class UserController extends Controller {
       );
     }
     const result = await this.userService.create(body, 'solt');
-    console.log(body.email);
     await this.favoritesService.create({email:body.email, offerId:[] });
     this.created(
       res,
