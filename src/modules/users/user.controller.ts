@@ -12,6 +12,7 @@ import { FavoritesServiceInterface } from '../favorites/favorites-service.interf
 import { StatusCodes } from 'http-status-codes';
 import HttpError from '../../common/errors/http-error.js';
 import LoginUserDto from './dto/login-user.dto.js';
+import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 
 
 @injectable()
@@ -25,16 +26,19 @@ export default class UserController extends Controller {
 
     this.logger.info('Register routes for UserController...');
 
-    this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:id', method: HttpMethod.Get, handler: this.show});
-    this.addRoute({path: '/login', method: HttpMethod.Post, handler: this.login});
+    this.addRoute(
+      {path: '/',
+        method: HttpMethod.Post,
+        handler: this.create,
+        middlewares: [new ValidateDtoMiddleware(CreateUserDto)]
+      });
 
-  }
-
-  public async show(_req: Request, res: Response): Promise<void> {
-    const user = await this.userService.findById(_req.params.id);
-    const userResponse = fillDTO(UserResponse, user);
-    this.ok(res, userResponse);
+    this.addRoute({
+      path: '/login',
+      method: HttpMethod.Post,
+      handler: this.login,
+      middlewares: [new ValidateDtoMiddleware(LoginUserDto)]
+    });
   }
 
 

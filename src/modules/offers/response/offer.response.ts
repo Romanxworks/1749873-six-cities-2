@@ -46,10 +46,10 @@ export default class OfferResponse {
   public price!: number;
 
   @Expose()
-  public location!: {
-        latitude: number,
-        longitude: number,
-  };
+  public latitude!: number;
+
+  @Expose()
+  public longitude!: number;
 
   @Expose()
   public city!: string;

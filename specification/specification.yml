@@ -396,12 +396,13 @@ components:
           type: number
           example: 100
 
-        location: 
-          type: object
-          example: {
-              latitude: 48.85661,
-              longitude: 2.351499,
-              }
+        latitude: 
+          type: number
+          example: 48.85661
+        
+        longitude: 
+          type: number
+          example: 2.351499
 
         city:
           type: string
@@ -473,12 +474,13 @@ components:
           type: number
           example: 100
 
-        location: 
-          type: object
-          example: {
-              latitude: 48.85661,
-              longitude: 2.351499,
-              }
+        latitude: 
+          type: number
+          example: 48.85661
+        
+        longitude: 
+          type: number
+          example: 2.351499
 
         city:
           type: string

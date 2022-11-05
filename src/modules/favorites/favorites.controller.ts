@@ -9,6 +9,7 @@ import {FavoritesServiceInterface} from './favorites-service.interface.js';
 import FavoritesResponse from './response/favorites.response.js';
 import HttpError from '../../common/errors/http-error.js';
 import {StatusCodes} from 'http-status-codes';
+import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.middleware.js';
 
 
 @injectable()
@@ -21,13 +22,17 @@ export default class FavoritesController extends Controller {
 
     this.logger.info('Register routes for FavoritesController...');
 
-    this.addRoute({path: '/:id/:type', method: HttpMethod.Post, handler: this.addOrDelete});
+    this.addRoute({
+      path: '/:id/:type',
+      method: HttpMethod.Post,
+      handler: this.addOrDelete,
+      middlewares: [new ValidateObjectIdMiddleware('id')]
+    });
     this.addRoute({path: '/:email', method: HttpMethod.Get, handler: this.show});
 
   }
 
   public async show(_req: Request, res: Response,): Promise<void> {
-    // console.log(_req.headers);
     const favorites = await this.favoritesService.findByUserEmail(_req.params.email);
     const favoritesResponse = fillDTO(FavoritesResponse, favorites);
     return this.send(res, StatusCodes.OK, favoritesResponse);

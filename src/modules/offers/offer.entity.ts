@@ -92,10 +92,11 @@ export class OfferEntity extends defaultClasses.TimeStamps  {
   public price!: number;
 
   @prop({required: true})
-  public location!: {
-    latitude: number,
-    longitude: number,
-  };
+  public latitude!: number;
+
+  @prop({required: true})
+  public longitude!: number;
+
 
   @prop({required: true})
   public city!: string;
