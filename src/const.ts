@@ -23,4 +23,6 @@ export const MIN_LENGTH_DESCRIPTION = 20;
 export const MAX_LENGTH_DESCRIPTION = 1024;
 export const DEFAULT_OFFER_COUNT = 60;
 export const DEFAULT_OFFER_PREMIUM_COUNT = 3;
+export const MIN_LENGTH_TEXT_COMMENT = 5;
+export const MAX_LENGTH_TEXT_COMMENT = 1024;
 

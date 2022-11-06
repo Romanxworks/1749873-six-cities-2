@@ -8,7 +8,6 @@ import {DatabaseInterface} from '../common/database/database.interface.js';
 import express, {Express} from 'express';
 import {ControllerInterface} from '../common/controller/controller.interface.js';
 import {ExceptionFilterInterface} from '../common/errors/exception-filter.interface.js';
-// import { FavoritesServiceInterface } from '../modules/favorites/favorites-service.interface.js';
 
 
 @injectable()
@@ -22,6 +21,7 @@ export default class Application {
   @inject(Component.UserController) private userController: ControllerInterface,
   @inject(Component.FavoritesController) private favoritesController: ControllerInterface,
   @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
+  @inject(Component.CommentController) private commentController: ControllerInterface,
 
 
   ) {
@@ -32,6 +32,7 @@ export default class Application {
     this.expressApp.use('/offers', this.offerController.router);
     this.expressApp.use('/users', this.userController.router);
     this.expressApp.use('/favorites', this.favoritesController.router);
+    this.expressApp.use('/comments', this.commentController.router);
   }
 
   public initMiddleware() {
@@ -62,7 +63,5 @@ export default class Application {
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
 
-    // const offerS = await this.offer.findByUserEmail('cvw-roma@mail.ru');
-    // console.log(offerS);
   }
 }

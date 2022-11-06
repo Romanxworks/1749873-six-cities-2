@@ -1,5 +1,4 @@
 import {User} from './user.js';
-
 export type Offer = {
     images: string[];
     title: string;
@@ -14,10 +13,8 @@ export type Offer = {
     isFavorite: boolean;
     isPremium: boolean;
     price: number;
-    location: {
-        latitude: number,
-        longitude: number,
-    };
+    latitude: number;
+    longitude: number;
     city: string;
     previewImage: string
 }

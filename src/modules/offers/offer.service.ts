@@ -25,8 +25,6 @@ export default class OfferService implements OfferServiceInterface {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity>[] | null> {
-    const comments = await this.offerModel.findById(offerId);
-    console.log(comments?.goods.includes('Breakfast'));
     return this.offerModel.aggregate([
       {$match:{'_id':new mongoose.Types.ObjectId(offerId)}},
       {$lookup: {
@@ -41,18 +39,23 @@ export default class OfferService implements OfferServiceInterface {
           from: 'comments',
           localField: '_id',
           foreignField: 'offerId',
+          pipeline: [
+            {$group : {
+              _id : null,
+              rating: { $avg: '$rating' },
+              count: { $count: { } }
+            }},
+          ],
           as: 'allRating'
         },
       },
       { $addFields:
-    { host: { $arrayElemAt: ['$hoster', 0]},
-      commentCount: {$size: '$allRating'},
-      rating: {$trunc: {$avg: '$allRating'}},
-      id: { $toString: '$_id'},
-      date: '$createdAt',
+    { host: {$arrayElemAt: ['$hoster', 0]},
+      commentCount: {$ifNull:[{$arrayElemAt: ['$allRating.count', 0]}, 0]},
+      rating: {$ifNull:[{$trunc : [{$arrayElemAt: ['$allRating.rating', 0]}, 1]}, 0]},
     }
       },
-      { $unset: ['hoster', 'allRating']},
+      { $unset: ['hoster','allRating']},
     ]);
 
   }
@@ -74,16 +77,21 @@ export default class OfferService implements OfferServiceInterface {
             from: 'comments',
             localField: '_id',
             foreignField: 'offerId',
+            pipeline: [
+              {$group : {
+                _id : null,
+                rating: { $avg: '$rating' },
+                count: { $count: { } }
+              }},
+            ],
             as: 'allRating'
           },
         },
         { $addFields:
-          { host: { $arrayElemAt: ['$hoster', 0]},
-            commentCount: {$size: '$allRating'},
-            rating: {$trunc: {$avg: '$allRating'}},
-            id: { $toString: '$_id'},
-            date: '$createdAt',
-          }
+        { host: {$arrayElemAt: ['$hoster', 0]},
+          commentCount: {$ifNull:[{$arrayElemAt: ['$allRating.count', 0]}, 0]},
+          rating: {$ifNull:[{$trunc : [{$arrayElemAt: ['$allRating.rating', 0]}, 1]}, 0]},
+        }
         },
         { $unset: ['hoster', 'allRating']},
         { $limit: limit},
@@ -123,16 +131,21 @@ export default class OfferService implements OfferServiceInterface {
             from: 'comments',
             localField: '_id',
             foreignField: 'offerId',
+            pipeline: [
+              {$group : {
+                _id : null,
+                rating: { $avg: '$rating' },
+                count: { $count: { } }
+              }},
+            ],
             as: 'allRating'
           },
         },
         { $addFields:
-        { host: { $arrayElemAt: ['$hoster', 0]},
-          commentCount: {$size: '$allRating'},
-          rating: {$trunc: {$avg: '$allRating'}},
-          id: { $toString: '$_id'},
-          date: '$createdAt',
-        }
+      { host: {$arrayElemAt: ['$hoster', 0]},
+        commentCount: {$ifNull:[{$arrayElemAt: ['$allRating.count', 0]}, 0]},
+        rating: {$ifNull:[{$trunc : [{$arrayElemAt: ['$allRating.rating', 0]}, 1]}, 0]},
+      }
         },
         { $unset: ['hoster', 'allRating']},
         { $limit: DEFAULT_OFFER_PREMIUM_COUNT},
@@ -145,13 +158,6 @@ export default class OfferService implements OfferServiceInterface {
   public async exists(documentId: string): Promise<boolean> {
     return (await this.offerModel
       .exists({_id: documentId})) !== null;
-  }
-
-  public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, {'$inc': {
-        commentCount: 1,
-      }}).exec();
   }
 
 }
